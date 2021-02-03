@@ -14,7 +14,7 @@ name: Build and Deploy to IKS
 on:
   push:
     branches: [ main ]
-  pull_request:
+  pull_request_target:
     branches: [ main ]
 
 # Environment variables available to all jobs and steps in this workflow
