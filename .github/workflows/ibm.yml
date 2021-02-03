@@ -28,7 +28,7 @@ env:
   IKS_CLUSTER: develop
   DEPLOYMENT_NAME: demo
   NAMESPACE: demo
-  PORT: 5001
+  PORT: 8080
 
 jobs:
   setup-build-publish-deploy:
