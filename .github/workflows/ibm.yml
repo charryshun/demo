@@ -15,7 +15,7 @@ on:
   push:
     branches: [ main ]
   pull_request_target:
-    types: [edited, assigned, opened, synchronize, reopened]
+#     types: [edited, assigned, opened, synchronize, reopened]
 
 # Environment variables available to all jobs and steps in this workflow
 env:
@@ -35,8 +35,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
 
-    - name: Checkout
+    - name: Checkout forked repository
       uses: actions/checkout@v2
+      with:
+        ref: ${{github.event.pull_request.head.ref}}
+        repository: ${{github.event.pull_request.head.repo.full_name}}
 
     # Download and Install IBM Cloud CLI
     - name: Install IBM Cloud CLI
