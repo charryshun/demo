@@ -111,5 +111,5 @@ jobs:
         # kubectl create --namespace $NAMESPACE service loadbalancer $DEPLOYMENT_NAME --tcp=80:$PORT --dry-run=client -o yaml > service.yaml
         # kubectl apply -f service.yaml
         # kubectl get services -o wide
-        helm upgrade --install -f chart/values.yaml --set image.repository="$DOCKERHUB_ORG"/"$IMAGE_NAME",image.tag="$GITHUB_SHA",deployment.port=8080,namespace=$NAMESPACE chart/Chart.yaml $DEPLOYMENT_NAME
+        helm upgrade $DEPLOYMENT_NAME --namespace $NAMESPACE --install --set image.repository="$DOCKERHUB_ORG"/"$IMAGE_NAME",image.tag="$GITHUB_SHA",deployment.port=8080 chart
         helm list
