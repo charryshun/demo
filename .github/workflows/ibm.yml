@@ -112,4 +112,4 @@ jobs:
         # kubectl apply -f service.yaml
         # kubectl get services -o wide
         helm upgrade $DEPLOYMENT_NAME --namespace $NAMESPACE --install --set image.repository="$DOCKER_HUB_ORG"/"$DOCKER_IMAGE_NAME",image.tag="$DOCKER_IMAGE_TAG",deployment.port=8080 chart
-        helm history
+        helm history --namespace $NAMESPACE $DEPLOYMENT_NAME
