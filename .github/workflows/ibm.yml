@@ -15,11 +15,11 @@ on:
   push:
     branches: [ main ]
   pull_request_target:
-    types: [edited, assigned, opened, synchronize, reopened]
+#     types: [edited, assigned, opened, synchronize, reopened]
 
 # Environment variables available to all jobs and steps in this workflow
 env:
-  GITHUB_SHA: ${{ github.sha }}
+  GITHUB_SHA: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.sha || github.sha }}
   IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}
   IBM_CLOUD_REGION: us-south
   DOCKERHUB_ORG: ${{ secrets.DOCKERHUB_ORG }}
@@ -34,9 +34,20 @@ jobs:
     name: Setup, Build, Publish, and Deploy
     runs-on: ubuntu-latest
     steps:
+    - name: Echo variables
+      run: |
+        echo "github.event_name:${{ github.event_name }}"
 
-    - name: Checkout
+    - name: Checkout forked repository
+      if: github.event_name == 'push'
       uses: actions/checkout@v2
+
+    - name: Checkout forked repository
+      if: github.event_name == 'pull_request_target'
+      uses: actions/checkout@v2
+      with:
+        ref: ${{github.event.pull_request.head.ref}}
+        repository: ${{github.event.pull_request.head.repo.full_name}}
 
     # Download and Install IBM Cloud CLI
     - name: Install IBM Cloud CLI
