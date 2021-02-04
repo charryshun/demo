@@ -68,6 +68,7 @@ jobs:
 
   deploy:
     name: Deploy the Docker image to the IKS cluster
+    needs: setup-build-publish-deploy
     runs-on: ubuntu-latest
     steps:
     - name: Checkout
