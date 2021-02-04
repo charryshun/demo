@@ -37,6 +37,7 @@ jobs:
     - name: Echo variables
       run: |
         echo "github.event_name:${{ github.event_name }}"
+        echo "GITHUB_SHA:$GITHUB_SHA"
 
     - name: Checkout forked repository
       if: github.event_name == 'push'
