@@ -22,7 +22,7 @@ env:
   IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}
   IBM_CLOUD_REGION: us-south
   IKS_CLUSTER: develop
-  DOCKER_HUB_ORG: ${{ secrets.DOCKER_HUB_ORG }}
+  DOCKER_HUB_ORG: ${{ secrets.DOCKERHUB_ORG }}
   DOCKER_IMAGE_NAME: demo
   DOCKER_IMAGE_TAG: ${{ github.event_name == 'pull_request_target' && github.event.pull_request.head.sha || github.sha }}
   DEPLOYMENT_NAME: demo
@@ -39,7 +39,7 @@ jobs:
         echo "github.event_name:${{ github.event_name }}"
         echo "DOCKER_IMAGE_TAG:$DOCKER_IMAGE_TAG"
 
-    - name: Checkout forked repository
+    - name: Checkout
       if: github.event_name == 'push'
       uses: actions/checkout@v2
 
@@ -72,9 +72,7 @@ jobs:
     # Build the Docker image
     - name: Build with Docker
       run: |
-        docker build -t "$DOCKER_HUB_ORG"/"$DOCKER_IMAGE_NAME":"$DOCKER_IMAGE_TAG" \
-          --build-arg DOCKER_IMAGE_TAG="$DOCKER_IMAGE_TAG" \
-          --build-arg GITHUB_REF="$GITHUB_REF" .
+        docker build -t "$DOCKER_HUB_ORG"/"$DOCKER_IMAGE_NAME":"$DOCKER_IMAGE_TAG"
 
     # Push the image to IBM Container Registry
     - name: Push the image to DockerHub
