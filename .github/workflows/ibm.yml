@@ -19,7 +19,7 @@ on:
 
 # Environment variables available to all jobs and steps in this workflow
 env:
-  GITHUB_SHA: ${{ github.sha }}
+  GITHUB_SHA: ${{ github.event == 'pull_request_target' && github.event.pull_request.head.sha || github.sha }}
   IBM_CLOUD_API_KEY: ${{ secrets.IBM_CLOUD_API_KEY }}
   IBM_CLOUD_REGION: us-south
   DOCKERHUB_ORG: ${{ secrets.DOCKERHUB_ORG }}
@@ -36,6 +36,11 @@ jobs:
     steps:
 
     - name: Checkout forked repository
+      if: github.event == 'push'
+      uses: actions/checkout@v2
+
+    - name: Checkout forked repository
+      if: github.event == 'pull_request_target'
       uses: actions/checkout@v2
       with:
         ref: ${{github.event.pull_request.head.ref}}
